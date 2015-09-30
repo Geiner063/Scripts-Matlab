@@ -1,0 +1,19 @@
+function Ejex = F_Rampa(Frec,Ampl,Tope,Muestreo)
+
+Ejex = (0:Muestreo:Tope);
+texto = fopen('rampa.txt','wt');
+for n = 0:Muestreo:Tope
+    t = n;
+    while (t > 1/Frec)
+        t = t - 1/Frec;
+    end
+    if ((1/(4*Frec)) >= t && t >= 0)
+        y = 4*Ampl*Frec*t;
+    elseif ((3/(4*Frec)) >= t && t > (1/(4*Frec)))
+        y = -4*Ampl*Frec*t + 2*Ampl;
+    else
+        y = 4*Ampl*Frec*t - 4*Ampl;
+    end
+    fprintf(texto,'%.15f \n', y); 
+end
+fclose(texto);
