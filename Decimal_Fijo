@@ -1,0 +1,80 @@
+function Matrix = Decimal_Fijo(Valor,Word,Pres) 
+
+if (Valor >= 0) % Revisar si es un número positivo o negativo
+    Signo = 0;
+else
+    Signo = 1;
+end
+
+Valor2 = abs(Valor); % Valor absoluto del número
+Flot = 0;            % Número de bits de la parte flotante
+Cero = 0;
+Matrix = Cero;
+for n = 2:1:Word % Pone todos los bits indicados por el ancho de palabra en cero
+    Matrix(n) = Cero;
+end
+
+while ((2^(-1*Flot)) > (2*Pres)) % Establecimiento de la cantidad de bits de la parte flotante
+    Flot = Flot+1;               
+end
+
+Numero = round(Valor2*(2^Flot)); % Número en decimal a convertir
+if (Numero ~= 0) % Evitar el caso donde el valor de entrada es 0
+    NumeroBin = dec2bin(Numero); % Conversión a un string en binario
+    A = length(NumeroBin); %Tamaño de la nueva cadena de bits
+    for n = 1:1:A
+        Matrix(n+Word-A) = bin2dec(NumeroBin(n)); %Convierte el string en matriz
+    end
+    % Complemtento a 2 de los números negativos
+    if (Signo == 1)
+        for n = Word:-1:1 % Inversión de todos los bits
+            if (Matrix(n) == 1)
+                Matrix(n) = 0;
+            else
+                Matrix(n) = 1;
+            end 
+        end
+        B = Word;
+        Estado = 1;
+        while (Estado == 1) % Suma de una unidad a la cadena de bits
+            if (Matrix(B) == 1)
+                Matrix(B) = 0;
+                B = B - 1;
+            else
+                Matrix(B) = 1;
+                Estado = 0;
+            end
+        end
+    end
+end
+
+% fprintf('\rParte Flotante: %u \r',Flot)
+% fprintf('Parte Entera: %u \r',(Word-Flot))
+% 
+% fprintf('El valor en punto fijo es: ')
+% for n = 1:1:Word
+%      fprintf('%u',Matrix(n))
+% end
+% fprintf('\r')
+% 
+% % Cálculo del valor decimal
+% M = -1*Flot;
+% Decimal_Nuevo = 0;
+% for s = Word:-1:1 % Cálculo del nuevo valor decimal equivalente al dato binario
+%     if (Matrix(s) == 1)
+%         Decimal_Nuevo = Decimal_Nuevo + 2^M;
+%     end
+%     M = M + 1;
+% end
+% if(Signo == 1 && Numero ~= 0) % Resta del peso del bit de signo
+%     Decimal_Nuevo = Decimal_Nuevo - (2^M);
+% end
+% fprintf('El nuevo valor decimal es: %f \r',Decimal_Nuevo)
+% 
+% % Cálculo del error
+% ErrorAbs = abs(Valor - Decimal_Nuevo);
+% ErrorRel = abs(ErrorAbs*100/Valor);
+% fprintf('El error absoluto es: %f \r',ErrorAbs)    
+% fprintf('El error relativo es: %f%% \r',ErrorRel)  
+    
+    
