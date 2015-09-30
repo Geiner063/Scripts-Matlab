@@ -1,0 +1,51 @@
+% Prueba Scripts Decimal - PF - Decimal
+
+Decimals = F_Seno(100,10,0.01,2.267573696e-5);
+Dato = load('salida.txt'); 
+Decimals_Charged = Dato';
+
+Amount = length(Decimals_Charged);
+W = 16;
+P = 0.0005;
+Binis = fopen('binarios.txt','wt');
+for n = 1:1:Amount
+    Bin = Decimal_Fijo(Decimals_Charged(n),W,P);
+    for nn = 1:1:W
+        fprintf(Binis,'%1u', Bin(nn));
+    end
+    fprintf(Binis,'\n');
+end
+fclose(Binis);
+
+fileID = fopen('binarios.txt');
+Binaries = textscan(fileID,'%16s'); %Ajustar ancho de palabra
+fclose(fileID);
+
+Decimals_List = fopen('salida2.txt','wt');
+for n = 1:1:Amount
+    New_Decimal = Fijo_Decimal(Binaries{1}{n},P);
+    fprintf(Decimals_List,'%.15f \n', New_Decimal);
+end
+fclose(Decimals_List);
+
+New_Values = load('salida2.txt'); 
+Datas = New_Values';
+
+Conta = 0;
+for n = 1:1:Amount
+    Resta = abs(Decimals_Charged(n) - Datas(n));
+    if (Resta > P)
+        Conta = Conta + 1;
+    end
+end
+
+fprintf('Cantidad de Errores = %u \r\r',Conta)    
+
+% subplot(1,2,1)
+% plot(Decimals,Decimals_Charged);
+% xlabel('Original');
+% 
+% subplot(1,2,2)
+% plot(Decimals,Datas);
+% xlabel('Trabajada');
+    
