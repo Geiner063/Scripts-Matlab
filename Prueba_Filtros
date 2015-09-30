@@ -1,0 +1,19 @@
+MOficial = 2.267573696e-5;
+
+Ejex = F_Rampa(500,1,0.01,MOficial); % Frecuencia, Amplitud, Extensión, Muestreo
+Dato = load('rampa.txt'); 
+Ejey = Dato';
+
+% Ejex = F_Seno(500,1,0.01,MOficial); % Frecuencia, Amplitud, Extensión, Muestreo
+% Dato = load('salida.txt'); 
+% Ejey = Dato';
+
+subplot(1,2,1)
+plot(Ejex,Ejey);
+xlabel('Original');
+
+Nuevo_Ejey = Paso_Bajo_5k(Ejey);
+
+subplot(1,2,2)
+plot(Ejex,Nuevo_Ejey);
+xlabel('Filtrada');
