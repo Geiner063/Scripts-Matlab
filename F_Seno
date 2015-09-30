@@ -1,0 +1,9 @@
+function Equis = F_Seno(Frec,Ampl,Tope,Muestreo)
+
+Equis = (0:Muestreo:Tope);
+fID1 = fopen('salida.txt','wt');
+for n = 0:Muestreo:Tope
+    y = Ampl*sin(2*pi*Frec*n);
+    fprintf(fID1,'%.15f \n', y); 
+end
+fclose(fID1);
