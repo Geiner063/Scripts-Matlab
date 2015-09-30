@@ -1,0 +1,21 @@
+function Decimal = Fijo_Decimal(Valor,Pres)
+
+Flot = 0;
+Decimal = 0;
+A = length(Valor);
+while ((2^(-1*Flot)) > (2*Pres)) % Establecimiento de la cantidad de bits de la parte flotante
+    Flot = Flot+1;               
+end
+M = -1*Flot;
+for n = A:-1:2
+    if(Valor(n) == '1')
+        Decimal = Decimal + 2^M;
+    end
+    M = M+1;
+end
+if(Valor(1) == '1') 
+    Decimal = Decimal - (2^M);
+end
+
+%fprintf('El valor decimal es: %f \r',Decimal)
+
